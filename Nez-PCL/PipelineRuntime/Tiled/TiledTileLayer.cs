@@ -242,7 +242,7 @@ namespace Nez.Tiled
 			var rectangles = new List<Rectangle>();
 			var startCol = -1;
 			var index = -1;
-
+            
 			for( var y = 0; y < tiledMap.height; y++ )
 			{
 				for( var x = 0; x < tiledMap.width; x++ )
@@ -250,7 +250,20 @@ namespace Nez.Tiled
 					index = y * tiledMap.width + x;
 					var tile = getTile( x, y );
 
-					if( tile != null && ( checkedIndexes[index] == false || checkedIndexes[index] == null ) )
+                    if (tile != null) {
+                        var tilesetTile = tile.tilesetTile;
+                        if (tilesetTile != null) {
+                            var objGroup = tilesetTile.objectGroups[0];
+                            foreach (var obj in objGroup.objects) {
+                                if (obj.tiledObjectType == TiledObject.TiledObjectType.None) {
+                                    rectangles.Add(new Rectangle(x * tiledMap.tileWidth + obj.x, y * tiledMap.tileHeight + obj.y, obj.width, obj.height));
+                                }
+                            }
+                            continue;
+                        }
+                    }
+
+                    if ( tile != null && ( checkedIndexes[index] == false || checkedIndexes[index] == null ) )
 					{
 						if( startCol < 0 )
 							startCol = x;
@@ -274,7 +287,7 @@ namespace Nez.Tiled
 				}
 			}
 
-			return rectangles;
+            return rectangles;
 		}
 
 

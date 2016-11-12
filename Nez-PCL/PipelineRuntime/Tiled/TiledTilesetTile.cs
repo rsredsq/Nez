@@ -14,6 +14,7 @@ namespace Nez.Tiled
 		public readonly TiledMap tiledMap;
 		public List<TiledTileAnimationFrame> animationFrames;
 		public Dictionary<string, string> properties = new Dictionary<string, string>();
+        public List<TiledObjectGroup> objectGroups;
 
 		/// <summary>
 		/// returns the value of an "nez:isDestructable" property if present in the properties dictionary
