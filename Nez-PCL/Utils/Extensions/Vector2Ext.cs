@@ -147,14 +147,20 @@ namespace Nez
 			return Mathf.acos( Mathf.clamp( Vector2.Dot( from, to ), -1f, 1f ) ) * Mathf.rad2Deg;
 		}
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float angleTurnVectors(Vector2 a, Vector2 b) //return angle from a to b
+        {
+            float mat = a.X * b.Y - b.X * a.Y;
+            return Mathf.asin(mat / Mathf.sqrt(a.X * a.X + a.Y * a.Y) / Mathf.sqrt(b.X * b.X + b.Y * b.Y));
+        }
 
-		/// <summary>
-		/// returns the angle between left and right with self being the center point in degrees
-		/// </summary>
-		/// <param name="self">Self.</param>
-		/// <param name="left">V left.</param>
-		/// <param name="right">V right.</param>
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+        /// <summary>
+        /// returns the angle between left and right with self being the center point in degrees
+        /// </summary>
+        /// <param name="self">Self.</param>
+        /// <param name="left">V left.</param>
+        /// <param name="right">V right.</param>
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static float angleBetween( this Vector2 self, Vector2 left, Vector2 right )
 		{
 			var one = left - self;

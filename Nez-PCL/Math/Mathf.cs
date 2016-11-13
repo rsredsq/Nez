@@ -634,8 +634,13 @@ namespace Nez
 			return (float)Math.Acos( f );
 		}
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float asin(float f)
+        {
+            return (float)Math.Asin(f);
+        }
 
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static float exp( float power )
 		{
 			return (float)Math.Exp( power );
