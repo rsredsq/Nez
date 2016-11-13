@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Nez.PhysicsShapes;
@@ -613,7 +614,10 @@ namespace Nez.Spatial
 			_cellHits.Sort( compareRaycastHits );
 			for( var i = 0; i < _cellHits.Count; i++ )
 			{
-				_hits[hitCounter] = _cellHits[i];
+                //TODO: think if it's correct way of preventing colliders adding twice(or more) if they are in the two(or more) cells of spatial hash
+                var toAdd = _cellHits[i];
+                if (!_hits.Any(e => e.collider == toAdd.collider))
+				    _hits[hitCounter] = toAdd;
 
 				// increment the hit counter and if it has reached the array size limit we are done
 				hitCounter++;
