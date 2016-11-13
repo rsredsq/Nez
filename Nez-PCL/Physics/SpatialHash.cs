@@ -611,21 +611,23 @@ namespace Nez.Spatial
 				return false;
 
 			// all done processing the cell. sort the results and pack the hits into the result array
-			_cellHits.Sort( compareRaycastHits );
+			//_cellHits.Sort( compareRaycastHits );
 			for( var i = 0; i < _cellHits.Count; i++ )
 			{
                 //TODO: think if it's correct way of preventing colliders adding twice(or more) if they are in the two(or more) cells of spatial hash
                 var toAdd = _cellHits[i];
-                if (!_hits.Any(e => e.collider == toAdd.collider))
-				    _hits[hitCounter] = toAdd;
+                if (_hits.Any(e => e.collider == toAdd.collider)) continue;
+				_hits[hitCounter] = toAdd;
 
 				// increment the hit counter and if it has reached the array size limit we are done
 				hitCounter++;
-				if( hitCounter == _hits.Length )
+				if( hitCounter == _hits.Length ) {
+                    Array.Sort(_hits, compareRaycastHits);
 					return true;
+                }
 			}
-
-			return false;
+            Array.Sort(_hits, compareRaycastHits);
+            return false;
 		}
 
 
