@@ -309,6 +309,7 @@ namespace Nez.Spatial
 			//debugDrawCellDetails( intX, intY, cell != null ? cell.Count : 0 );
 			if( cell != null && _raycastParser.checkRayIntersection( intX, intY, cell ) )
 			{
+                Array.Sort(hits, RaycastResultParser.compareRaycastHits);
 				_raycastParser.reset();
 				return _raycastParser.hitCounter;
 			}
@@ -329,13 +330,15 @@ namespace Nez.Spatial
 				cell = cellAtPosition( intX, intY );
 				if( cell != null && _raycastParser.checkRayIntersection( intX, intY, cell ) )
 				{
-					_raycastParser.reset();
+                    Array.Sort(hits, RaycastResultParser.compareRaycastHits);
+                    _raycastParser.reset();
 					return _raycastParser.hitCounter;
 				}
 			}
 
-			// make sure we are reset
-			_raycastParser.reset();
+            // make sure we are reset
+            Array.Sort(hits, RaycastResultParser.compareRaycastHits);
+            _raycastParser.reset();
 			return _raycastParser.hitCounter;
 		}
 	
@@ -530,7 +533,7 @@ namespace Nez.Spatial
 	{
 		public int hitCounter;
 
-		static Comparison<RaycastHit> compareRaycastHits = ( a, b ) => { return a.distance.CompareTo( b.distance ); };
+		internal static Comparison<RaycastHit> compareRaycastHits = ( a, b ) => { return a.distance.CompareTo( b.distance ); };
 
 		//int _cellSize;
 		//Rectangle _hitTesterRect; see note in checkRayIntersection
@@ -611,7 +614,6 @@ namespace Nez.Spatial
 				return false;
 
 			// all done processing the cell. sort the results and pack the hits into the result array
-			//_cellHits.Sort( compareRaycastHits );
 			for( var i = 0; i < _cellHits.Count; i++ )
 			{
                 //TODO: think if it's correct way of preventing colliders adding twice(or more) if they are in the two(or more) cells of spatial hash
@@ -621,12 +623,9 @@ namespace Nez.Spatial
 
 				// increment the hit counter and if it has reached the array size limit we are done
 				hitCounter++;
-				if( hitCounter == _hits.Length ) {
-                    Array.Sort(_hits, compareRaycastHits);
+				if( hitCounter == _hits.Length ) 
 					return true;
-                }
 			}
-            Array.Sort(_hits, compareRaycastHits);
             return false;
 		}
 
