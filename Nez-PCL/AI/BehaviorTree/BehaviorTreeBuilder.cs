@@ -83,11 +83,16 @@ namespace Nez.AI.BehaviorTrees
 			return setChildOnParent( new ExecuteAction<T>( func ) );
 		}
 
+        public void action(object v)
+        {
+            throw new NotImplementedException();
+        }
 
-		/// <summary>
-		/// Like an action node but the function can return true/false and is mapped to success/failure.
-		/// </summary>
-		public BehaviorTreeBuilder<T> action( Func<T,bool> func )
+
+        /// <summary>
+        /// Like an action node but the function can return true/false and is mapped to success/failure.
+        /// </summary>
+        public BehaviorTreeBuilder<T> action( Func<T,bool> func )
 		{
 			return action( t => func( t ) ? TaskStatus.Success : TaskStatus.Failure );
 		}
@@ -198,8 +203,12 @@ namespace Nez.AI.BehaviorTrees
 			return pushParentNode( new Parallel<T>() );
 		}
 
+        public BehaviorTreeBuilder<T> parallelAll()
+        {
+            return pushParentNode(new ParallelAll<T>());
+        }
 
-		public BehaviorTreeBuilder<T> parallelSelector()
+        public BehaviorTreeBuilder<T> parallelSelector()
 		{
 			return pushParentNode( new ParallelSelector<T>() );
 		}
